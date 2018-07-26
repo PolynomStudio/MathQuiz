@@ -1,18 +1,17 @@
-## Interface: 60100
+## Interface: 80000
+
 ## Title: Math|cff69ccf0Quiz|r
 ## Title-deDE: Math|cff69ccf0Quiz|r
-## Author: Nöxli (EU-Azshara), Desertus (EU-Eredar)
-## Version: r7
 ## Notes: A mathematical quiz that tests the computational arts of you and your friends!
 ## Notes-deDE: Ein mathematisches Quiz, das die Rechenkünste von Euch und Euren Freunden testet!
-## DefaultState: Enabled
-## SavedVariables: scores, settings
-## X-Website: http://wow.curseforge.com/addons/mathquiz/
-## X-Curse-Project-Name: MathQuiz
-## X-Curse-Project-ID: mathquiz
+## Author: Noexli, Desertus
+## Version: @project-version@
 
-Libs\LibStub\LibStub.lua
-Libs\AceLocale-3.0\AceLocale-3.0.xml
+## X-Website: https://wow.curseforge.com/projects/mathquiz
+
+## SavedVariables: scores, settings
+
+embeds.xml
 
 Locales\deDE.lua
 Locales\enUS.lua

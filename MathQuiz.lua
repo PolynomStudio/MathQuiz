@@ -1,6 +1,6 @@
 ﻿---------------------------------
 -- Addon: MathQuiz
--- Author: Neoxx, Desertus (Nera'thor - EU)
+-- Author: Noexli, Desertus
 ---------------------------------
 
 --[[
@@ -37,9 +37,9 @@ function MQ_OnLoad()
 		if (command == L['BEFEHL_START']) then
 			MQ_Start();
 		elseif (command == L['BEFEHL_STOPP']) then
-			MQ_Stop();		
+			MQ_Stop();
 		elseif (command == L['BEFEHL_VERSION']) then
-			DEFAULT_CHAT_FRAME:AddMessage(L['BEFEHL_VERSION_VAR_X'](versionAddon));	
+			DEFAULT_CHAT_FRAME:AddMessage(L['BEFEHL_VERSION_VAR_X'](versionAddon));
 		elseif (command == L['BEFEHL_AUTOR']) then
 			DEFAULT_CHAT_FRAME:AddMessage(autorAddon);
 		elseif (command == L['BEFEHL_LEVEL']) then
@@ -48,13 +48,13 @@ function MQ_OnLoad()
 				MQ_Level_Funktion(eingabe);
 			else
 				DEFAULT_CHAT_FRAME:AddMessage(L['FEHLER_EINGABE_LEVEL']);
-			end		
+			end
 		--[[
 		elseif (command == L['BEFEHL_AUTOANTWORT']) then
 			MQ_Auto_Antwort_Funktion(string.upper(rest));
 		elseif (command == L['BEFEHL_ANTWORT']) then
 			MQ_Antwort_Funktion(string.upper(rest));
-		]]	
+		]]
 		elseif (command == L['BEFEHL_BESTENLISTE']) then
 			MQ_TopScores();
 		elseif (command == L['BEFEHL_BESTENLISTE_BEREICH']) then
@@ -65,7 +65,7 @@ function MQ_OnLoad()
 				DEFAULT_CHAT_FRAME:AddMessage(L['EINGABE_INKORREKT'], 1.0, 0.0, 0.0);
 			end
 		elseif (command == L['BEFEHL_BESTENLISTE_RESET']) then
-			MQ_ResetScore();			
+			MQ_ResetScore();
 		elseif (command == L['BEFEHL_ANTWORTZEIT']) then
 			if (tonumber(rest) ~= nil and tonumber(rest) >= 0) then
 				settings.timeToAnswer = tonumber(rest);
@@ -101,7 +101,7 @@ function MQ_OnLoad()
 		elseif (command == L['BEFEHL_EINSTELLUNGEN']) then
 			DEFAULT_CHAT_FRAME:AddMessage(L['BEFEHL_EINSTELLUNGEN_VAR_X_Y_Z_X1'](settings.outputChannel, settings.timeToAnswer, settings.timeBetweenQuestions, settings.topScoreListNr));
 		elseif (command == L['BEFEHL_EINSTELLUNGEN_RESET']) then
-			MQ_ResetSettings();	
+			MQ_ResetSettings();
 		else
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_CHATBEFEHLE']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_START_STOPP_1']);
@@ -109,13 +109,13 @@ function MQ_OnLoad()
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_VERSION_1']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_VERSION_2']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_AUTOR_1']);
-			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_AUTOR_2']);	
+			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_AUTOR_2']);
 			--[[
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_AUTOANTWORT_1']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_AUTOANTWORT_2']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_ANTWORT_1']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_ANTWORT_2']);
-			]]	
+			]]
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_BESTENLISTE_1']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_BESTENLISTE_2']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_BESTENLISTE_BEREICH_1']);
@@ -139,15 +139,15 @@ function MQ_OnLoad()
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_LEVEL_1']);
 			DEFAULT_CHAT_FRAME:AddMessage(L['INFO_LEVEL_2']);
 		end
-	end	
-	
+	end
+
 	SlashCmdList['MATHEQUIZ'] = handler;
 	if (settings ~= nil) then
 		settings = settings;
 	else
 		settings = {outputChannel = 'GUILD', topScoreListNr = 3, timeToAnswer = 15, timeBetweenQuestions = 5, outputChannelId = nil};
-	end	
-	
+	end
+
 	if (scores ~= nil) then
 		scores = scores;
 	else
@@ -175,7 +175,7 @@ function MQ_Start()
 	if (quizStatus == 0) then
 		SendChatMessage(L['MQ_START_VAR_X_Y'](settings.timeBetweenQuestions, difficulty), settings.outputChannel, nil, settings.outputChannelId);
 		quizStatus = 1;
-		MatheQuizFrame:SetScript('OnUpdate', MQ_OnUpdate); 
+		MatheQuizFrame:SetScript('OnUpdate', MQ_OnUpdate);
 		MatheQuizFrame.TimeSinceLastUpdate = 0;
 	else
 		DEFAULT_CHAT_FRAME:AddMessage(L['FEHLER_QUIZ_AN'], 1.0, 0.0, 0.0);
@@ -189,13 +189,13 @@ function MQ_CreateQuestion()
 	difficulties[1] = { 0, 1 };
 	difficulties[2] = { 0, 1, 2, 3 };
 	difficulties[3] = { 0, 1, 2, 3, 4, 5 };
-	difficulties[4] = { 0, 1, 2, 3, 4, 5, 6, 7 };	
+	difficulties[4] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
 	-- Bestimmung von z bzw. des Aufgabentyps
 	local z = difficulties[difficulty][math.random(1, table.getn(difficulties[difficulty]))];
 
 	if (z == 0) then
-		-- + 
+		-- +
 		a = math.random(-200, 200);
 		b = math.random(-200, 200);
 		c = '+';
@@ -216,11 +216,11 @@ function MQ_CreateQuestion()
 		b = math.random(-20, 20);
 		c = '*';
 		d = a * b
-		
+
 		if (d == 0) then
 			d = 0
 		end
-		
+
 		k = MQ_Klammer_Funktion(b);
 		m = a..c..k;
 	elseif (z == 3) then
@@ -271,7 +271,7 @@ function MQ_CreateQuestion()
 		d = a / b;
 		m = a..c..b
 	end
-	
+
 	local arg8 = settings.outputChannelId;
 	MatheQuizFrame:RegisterEvent('CHAT_MSG_'..settings.outputChannel);
 	if settings.outputChannel == 'PARTY' then
@@ -281,14 +281,14 @@ function MQ_CreateQuestion()
 	elseif settings.outputChannel == 'BATTLEGROUND' then
 		MatheQuizFrame:RegisterEvent('CHAT_MSG_BATTLEGROUND_LEADER');
 	end
-	
+
 	SendChatMessage(L['MQ_FRAGE_VAR_X'](m), settings.outputChannel, nil, settings.outputChannelId);
 	quizStatus = 2;
-	
+
 	if (antwortBoolean == true) then
 		DEFAULT_CHAT_FRAME:AddMessage(L['MQ_ANTWORT_VAR_X'](d), 1.0, 0.5, 0.0);
 	end
-	
+
 end
 
 function MQ_OnUpdate(self, elapsed)
@@ -302,7 +302,7 @@ function MQ_OnUpdate(self, elapsed)
 			MatheQuizFrame.TimeSinceLastUpdate = 0;
 			if (autoAntwortBoolean == true) then
 				SendChatMessage(d, settings.outputChannel, nil, settings.outputChannelId);
-			end	
+			end
 		else
 			return;
 		end
@@ -334,14 +334,14 @@ function MQ_TopScores()
 			SendChatMessage(L['MQ_BESTENLISTE_WINNER'](scores[x].name), settings.outputChannel, nil, settings.outputChannelId);
 		else
 			return;
-		end 
+		end
 		while x <= settings.topScoreListNr do
 			if (scores[x] ~= nil) then
 				SendChatMessage(scores[x].name..': '..scores[x].points, settings.outputChannel, nil, settings.outputChannelId);
 				x = x + 1;
 			else
 				return;
-			end 
+			end
 		end
 	end
 end
@@ -349,18 +349,18 @@ end
 function MQ_SortTopScore()
 	table.sort(scores, function(a1,a2) return a1.points > a2.points end);
 end
-	
+
 function MQ_EventHandler(event, ...)
 	local message, author = ...;
-	
+
 	if (event == 'CHAT_MSG_'..settings.outputChannel or event == 'CHAT_MSG_PARTY_LEADER' or event == 'CHAT_MSG_RAID_LEADER' or event == 'CHAT_MSG_BATTLEGROUND_LEADER') then
 		if(quizStatus == 2) then
 			message = gsub(message, ',', '.');
-			
+
 			if (message == tostring(d)) then
 				playerData = MQ_GetPlayerData(author);
 				playerData.points = playerData.points + 1;
-				SendChatMessage(L['MQ_ANTWORT_RICHTIG'](playerData.name, d, playerData.points), settings.outputChannel, nil, settings.outputChannelId);					
+				SendChatMessage(L['MQ_ANTWORT_RICHTIG'](playerData.name, d, playerData.points), settings.outputChannel, nil, settings.outputChannelId);
 				MatheQuizFrame:UnregisterEvent('CHAT_MSG_'..settings.outputChannel);
 				MatheQuizFrame:UnregisterEvent('CHAT_MSG_PARTY_LEADER');
 				MatheQuizFrame:UnregisterEvent('CHAT_MSG_RAID_LEADER');
@@ -380,18 +380,18 @@ function MQ_ResetSettings()
 	settings = {outputChannel = 'GUILD', topScoreListNr = 3, timeToAnswer = 15, timeBetweenQuestions = 5, outputChannelId = nil};
 	DEFAULT_CHAT_FRAME:AddMessage(L['MQ_SETTINGS_RESET'], 1.0, 0.5, 0.0);
 end
-	
+
 function MQ_GetPlayerData(playername)
 	if (scores[1] ~= nil) then
 		for i,v in ipairs(scores) do
 			if (v.name == playername) then
 				return v;
 			end
-		end		
+		end
 		playerData = {name = playername, points = 0};
 		table.insert(scores, playerData);
 		return playerData;
-	else 
+	else
 		playerData = {name = playername, points = 0};
 		table.insert(scores, playerData);
 		return playerData;
@@ -401,7 +401,7 @@ end
 -- weitere Funktionen
 function MQ_Mathe_Wurzel()
 	local w = math.random(0, 20);
-	return math.pow(w, 2);		
+	return math.pow(w, 2);
 end
 
 function MQ_Mathe_Divisor()
@@ -423,8 +423,8 @@ function MQ_Level_Funktion(_level)
 		difficulty = _level;
 		DEFAULT_CHAT_FRAME:AddMessage(L['LEVEL_GESETZT_X'](difficulty));
 	else
-		DEFAULT_CHAT_FRAME:AddMessage(L['FEHLER_EINGABE_LEVEL']);		
-	end	
+		DEFAULT_CHAT_FRAME:AddMessage(L['FEHLER_EINGABE_LEVEL']);
+	end
 end
 
 function MQ_Auto_Antwort_Funktion(_autoAntwortString)
@@ -435,9 +435,9 @@ function MQ_Auto_Antwort_Funktion(_autoAntwortString)
 		autoAntwortBoolean = false;
 		DEFAULT_CHAT_FRAME:AddMessage(L['AUTOANTWORT_MODUS_STATUS'](autoAntwortString), 1.0, 0.5, 0.0);
 	else
-		DEFAULT_CHAT_FRAME:AddMessage(L['EINGABE_INKORREKT'], 1.0, 0.0, 0.0);	
+		DEFAULT_CHAT_FRAME:AddMessage(L['EINGABE_INKORREKT'], 1.0, 0.0, 0.0);
 	end
-end	
+end
 
 function MQ_Antwort_Funktion(_antwortString)
 	if (_antwortString == L['AN']) then
@@ -447,7 +447,7 @@ function MQ_Antwort_Funktion(_antwortString)
 		antwortBoolean = false;
 		DEFAULT_CHAT_FRAME:AddMessage(L['ANTWORT_MODUS_STATUS'](antwortString), 1.0, 0.5, 0.0);
 	else
-		DEFAULT_CHAT_FRAME:AddMessage(L['EINGABE_INKORREKT'], 1.0, 0.0, 0.0);	
+		DEFAULT_CHAT_FRAME:AddMessage(L['EINGABE_INKORREKT'], 1.0, 0.0, 0.0);
 	end
 end
 
