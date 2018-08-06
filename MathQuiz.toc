@@ -16,5 +16,4 @@ embeds.xml
 Locales\deDE.lua
 Locales\enUS.lua
 
-MathQuiz.xml
 MathQuiz.lua
