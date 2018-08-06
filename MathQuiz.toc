@@ -1,7 +1,6 @@
 ## Interface: 80000
 
 ## Title: Math|cff69ccf0Quiz|r
-## Title-deDE: Math|cff69ccf0Quiz|r
 ## Notes: A mathematical quiz that tests the computational arts of you and your friends!
 ## Notes-deDE: Ein mathematisches Quiz, das die Rechenkünste von Euch und Euren Freunden testet!
 ## Author: Noexli, Desertus
