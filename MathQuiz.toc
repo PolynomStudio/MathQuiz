@@ -8,11 +8,11 @@
 
 ## X-Website: https://wow.curseforge.com/projects/mathquiz
 
-## SavedVariables: scores, settings
+## SavedVariables: MathQuiz_DB
 
 embeds.xml
 
-Locales\deDE.lua
 Locales\enUS.lua
+Locales\deDE.lua
 
 MathQuiz.lua
