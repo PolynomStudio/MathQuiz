@@ -12,7 +12,7 @@ FunctionWrapper.__index = FunctionWrapper
 - priority: the priority for calculations. only relativ order is important, e.g. multiplication should have a lower number than addition since
   multiplication takes precedence.
 ]]
-function FunctionWrapper:create(name, fn, is_binary, usable_on_all_levels, generate_input, make_string, priority)
+function FunctionWrapper:create(name, fn, is_binary, usable_on_all_levels, generate_input, make_string, priority, is_associative)
   local f = {}
   setmetatable(f, FunctionWrapper)
   f.name = name
@@ -22,6 +22,7 @@ function FunctionWrapper:create(name, fn, is_binary, usable_on_all_levels, gener
   f.generate_input = generate_input
   f.make_string = make_string
   f.priority = priority
+  f.is_associative = is_associative
   return f
 end
 
