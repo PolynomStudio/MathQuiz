@@ -47,8 +47,7 @@ local addition = FunctionWrapper:create(
   -- this is probably not the case for divsion, square root, etc due to domain restrictions
   generate_addition_input, -- a function that randomly generates input for the operator
   make_string_addition, -- the function that makes string representations of that operation
-  4, -- the priority (higher is less priority)
-  true) -- addition is associative
+  4) -- the priority (higher is less priority)
   
 add_to_usability_table(addition, true)
 
@@ -65,7 +64,7 @@ function make_string_subtraction(x, y)
   return input1_symbol_input2(x, "-", y)
 end
 
-local subtraction = FunctionWrapper:create("Subtraction", subtract, true, true, generate_subtraction_input, make_string_subtraction, 4, false)
+local subtraction = FunctionWrapper:create("Subtraction", subtract, true, true, generate_subtraction_input, make_string_subtraction, 4)
 
 add_to_usability_table(subtraction, true)
 
@@ -82,7 +81,7 @@ function make_string_multiplication(x, y)
   return input1_symbol_input2(x, "*", y)
 end
 
-local multiplication = FunctionWrapper:create("Multiplication", multiply, true, true, generate_multiplication_input, make_string_multiplication, 3, true)
+local multiplication = FunctionWrapper:create("Multiplication", multiply, true, true, generate_multiplication_input, make_string_multiplication, 3)
 
 add_to_usability_table(multiplication, true)
 
@@ -101,7 +100,7 @@ function make_string_division(x, y)
   return input1_symbol_input2(x, "/", y)
 end
 
-local division = FunctionWrapper:create("Division", divide, true, false, generate_division_input, make_string_division, 3, false)
+local division = FunctionWrapper:create("Division", divide, true, false, generate_division_input, make_string_division, 3)
 
 add_to_usability_table(division, false)
 
@@ -117,32 +116,15 @@ function gamma(n)
 end
 
 function generate_gamma_input()
-  return math.random(0, 5)
+  return math.random(1, 5)
 end
 
 function make_string_gamma(n)
   return tostring(n) .. "!"
 end
 
-local _gamma = FunctionWrapper:create("Gamma", gamma, false, false, generate_gamma_input, make_string_gamma, 2, nil)
+local gamma = FunctionWrapper:create("Gamma", gamma, false, false, generate_gamma_input, make_string_gamma, 2)
 
-add_to_usability_table(_gamma, false)
-
--- integer-Based Exponential / Power
-function power2(x)
-  return x * x
-end
-
-function generate_power2_input()
-  return math.random(1, 10)
-end
-
-function make_string_power2(x)
-  return tostring(x) .. "^2"
-end
-
-local _power2 = FunctionWrapper:create("Power2", power2, false, true, generate_power2_input, make_string_power2, 2, false)
-
-add_to_usability_table(_power2, true)
+add_to_usability_table(gamma, false)
 
 return AvailableFunctions

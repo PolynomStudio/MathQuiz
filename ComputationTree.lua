@@ -66,44 +66,15 @@ function Node:generate_leaf_values()
 end
 
 --[[ This method generates an exercise string from the computation tree. 
-First attempt on minimal parantheses support, this needs to be tested thoroughly
+Currently, no support for minimal parantheses output! ToDo: Add minimal parantheses support.
 ]]
 function Node:generate_exercise()
   if self.operator == nil then
     return tostring(self.value)
   elseif self.operator.is_binary then -- binary operator
-    if self:needs_parantheses() then
-      return "(" .. self.operator:to_string(self.children[1]:generate_exercise(), self.children[2]:generate_exercise()) .. ")"
-    else -- no parantheses
-      if self.parent then
-      end
-      return self.operator:to_string(self.children[1]:generate_exercise(), self.children[2]:generate_exercise())
-    end
+    return "(" .. self.operator:to_string(self.children[1]:generate_exercise(), self.children[2]:generate_exercise()) .. ")"
   else -- unary
-    if self:needs_parantheses() then
-      return "(" .. self.operator:to_string(self.children[1]:generate_exercise()) .. ")"
-    else
-      return self.operator:to_string(self.children[1]:generate_exercise())
-    end
-  end
-end
-
--- Helper method to decide if parantheses are needed
-function Node:needs_parantheses()
-  if self.operator.is_binary then
-    return (self.parent
-            and ( self.operator.priority > self.parent.operator.priority
-                or
-                    (self.operator.priority == self.parent.operator.priority
-                    and not self.parent.operator.is_associative
-                    and self.parent.children[1] ~= self)
-                )
-            )
-  else -- unary
-    return (self.parent and (self.operator.priority > self.parent.operator.priority 
-                        or self.operator.priority == self.parent.operator.priority and not self.parent.operator.is_associative
-                          )
-            )
+    return "(" .. self.operator:to_string(self.children[1]:generate_exercise()) .. ")"
   end
 end
 
@@ -132,6 +103,7 @@ This will add new children to the current node according to how many operands th
 at the current node expects. Functions in the table "function_wrapper_table_low_level" will only be
 used in the lowest level to avoid absurd numbers.
 p is the probability of a new node being a value instead of an operator
+ToDo: Implement some helper functions, this monstrosity should be killed before it lays eggs ...
 ]]
 function Node:make_subtree(d, function_wrapper_table_all_levels, function_wrapper_table_low_level, p)
   if d <= 0 then
@@ -154,8 +126,7 @@ function Node:build_child(d, function_wrapper_table_all_levels, function_wrapper
     if is_left_child then
       value = a
     else
-      value = b or a -- if it is a right child, we should account for special cases in operator
-      -- input generation, like zero divisions. For unary operators, b might be nil, so use b or a.
+      value = b
     end
     child = Node:create(nil, self, value)
   else
@@ -178,6 +149,5 @@ end
 
 -- selects a random item from a table with indices from 1 to #table.
 function random_choice_from_table(table)
-  choice = table[math.random(#table)]
-  return choice
+  return table[math.random(#table)]
 end
