@@ -127,6 +127,16 @@ function Tree:create(d, function_wrapper_table_all_levels, function_wrapper_tabl
   return tree
 end
 
+-- A helper to generate the exercise corresponding to that tree
+function Tree:generate_exercise()
+  return self.root:generate_exercise()
+end
+
+-- Helper method to compute the value of that tree's exercise.
+function Tree:compute_value()
+  return self.root:compute_value()
+end
+
 --[[ Build subtrees by recursive calls
 This will add new children to the current node according to how many operands the corresponding operator
 at the current node expects. Functions in the table "function_wrapper_table_low_level" will only be
