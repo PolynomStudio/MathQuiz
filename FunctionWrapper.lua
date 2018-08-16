@@ -3,15 +3,16 @@
 FunctionWrapper = {}
 FunctionWrapper.__index = FunctionWrapper
 
---[[ Constructor
-- fn: a function pointer to the actual computation function for that node, e.g. to a function add(x, y)
-- is_binary: if false, the correspondig operator takes exactly one argument (e.g. factorial), else it takes exactly two arguments (e.g. add)
-- usable_on_all_levels: if true, the operator that has been passed can be used on all levels of the
-- generate_input: a function that generates exactly two inputs for fn. If fn is unary (i.e. not binary), the second return value should be nil.
-- make_string: a function that converts the two inputs into an ouput string, e.g. for addition make_string(1, 2) returns "1 + 2".
-- priority: the priority for calculations. only relativ order is important, e.g. multiplication should have a lower number than addition since
-  multiplication takes precedence.
-]]
+--- Constructor for a wrapper class that stores useful properties along with a function.
+-- @param name The name of the operator or function, e.g. "Addition"
+-- @param fn A reference to the function to be stored
+-- @param is_binary A boolean value to indicate if the functions takes two arguments (true) or one argument (false)
+-- @param usable_on_all_levels A boolean to indicate if the function is usable on all levels of the computation tree. This should be false if the function requires special input like perfect squares.
+-- @param generate_input A reference to a function that generates input for this operator
+-- @param make_string A reference to a function that makes a string out of the operator and its input(s), e.g. make_string(1, 2) returns "1 + 2"
+-- @param priority Operator precedence. A lower number means higher precedence. Only relative order is important.
+-- @param is_associative A boolean to indicate whether the function is associative like e.g. addition or not like e.g. subtraction
+-- @return A FunctionWrapper instance with some utility related to functions and its properties
 function FunctionWrapper:create(name, fn, is_binary, usable_on_all_levels, generate_input, make_string, priority, is_associative)
   local f = {}
   setmetatable(f, FunctionWrapper)
@@ -26,7 +27,10 @@ function FunctionWrapper:create(name, fn, is_binary, usable_on_all_levels, gener
   return f
 end
 
--- method to actually compute the output of that function given 1 or 2 inputs 
+--- A method to compute the output of the function given inputs.
+-- @param x The first input parameter
+-- @param y The second input parameter (may be omitted for unary operators)
+-- @return The return value of the stored function for inputs x and y
 function FunctionWrapper:compute(x, y)
   if self.is_binary then
     return self.fn(x, y)
@@ -35,12 +39,14 @@ function FunctionWrapper:compute(x, y)
   end
 end
 
--- Method to initiate input generation for that operator.
+--- A method to generate inputs for the specified parameter.
+-- @return The generated inputs for the stored operator
 function FunctionWrapper:generate_input()
   return self.generate_input()
 end
 
--- Method to make a string from output
+--- A method to make a string out of the operator and the operand(s)
+-- @return The string representation of the computation
 function FunctionWrapper:to_string(x, y)
   return self.make_string(x, y)
 end
