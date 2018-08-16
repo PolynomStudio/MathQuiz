@@ -137,6 +137,11 @@ function Tree:compute_value()
   return self.root:compute_value()
 end
 
+-- Helper method to compute the number of operations in the tree
+function Tree:get_num_operations()
+  return self.root:get_num_operations()
+end
+
 --[[ Build subtrees by recursive calls
 This will add new children to the current node according to how many operands the corresponding operator
 at the current node expects. Functions in the table "function_wrapper_table_low_level" will only be
@@ -173,6 +178,20 @@ function Node:build_child(d, function_wrapper_table_all_levels, function_wrapper
     child:make_subtree(d-1, function_wrapper_table_all_levels, function_wrapper_table_low_level, p)
   end
   return child
+end
+
+-- Method to get the number of operations that are contained within the subtree rooted at that node
+function Node:get_num_operations()
+  -- If a value is at this node, it does not contain any operations in its subtree
+  if self.value ~= nil then
+    return 0
+  else -- Now, it must be an operation
+    local num_operations = 1
+    for i, child in pairs(self.children) do
+      num_operations = num_operations + child:get_num_operations()
+    end
+    return num_operations
+  end
 end
 
 -- Returns which function table to use according to the depth of the node
